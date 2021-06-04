@@ -31,6 +31,23 @@ export default function ProductList() {
   const dispatch = useDispatch();
   const {toggleModal, setId} = useModalProductForm();
 
+   useEffect(() => {
+    function loadTotals() {
+      if(!products) return;
+      
+
+      const amountFinal = products
+        .map(product => product?.amount)
+        .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+      const priceFinal = products.reduce((accumulator, currentValue) => accumulator + Number(currentValue.price) * currentValue.amount, 0);
+
+      setTotalAmount(amountFinal);
+      setTotalPrice(priceFinal);
+    }
+
+    loadTotals();
+  }, [products])
+
   function handleDeleteProduct(id: string) {
     dispatch({
           type: 'DELETE_PRODUCT',
