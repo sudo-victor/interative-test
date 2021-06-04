@@ -7,3 +7,4 @@ Teste técnico de cadastro de produtos
 - ```yarn or npm install```
 - ```yarn start or npm start```
 
+[veja o projeto](https://priceless-tereshkova-6e650c.netlify.app/)
