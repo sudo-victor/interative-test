@@ -27,12 +27,14 @@ type Product = {
 export default function ProductList() {
   const  [totalAmount, setTotalAmount] = useState(0);
   const  [totalPrice, setTotalPrice] = useState(0);
+  const  [search, setSearch] = useState('');
   const products = useSelector((state: State) => state.product.product);
+  const [productsFiltered, setProductsFiltered] = useState<Product[]>([])
   const dispatch = useDispatch();
-  const {toggleModal, setId} = useModalProductForm();
+  // const {toggleModal, setId} = useModalProductForm();
 
    useEffect(() => {
-    function loadTotals() {
+    function loadDatas() {
       if(!products) return;
       
 
@@ -43,9 +45,10 @@ export default function ProductList() {
 
       setTotalAmount(amountFinal);
       setTotalPrice(priceFinal);
+      setProductsFiltered(products);
     }
 
-    loadTotals();
+    loadDatas();
   }, [products])
 
   function handleDeleteProduct(id: string) {
@@ -54,11 +57,21 @@ export default function ProductList() {
           payload: {id},
     });
   } 
-  
-  function handleEditProduct(id: string) {
-    setId(id);
-    toggleModal();
+
+  function handleSearchProduct() {
+    if(search === '') {
+      setProductsFiltered(products);
+    }
+    const productsFilteredGroup = products.filter(product => product.name.includes(search.toUpperCase()));
+
+    
+    setProductsFiltered(productsFilteredGroup);
   }
+  
+  // function handleEditProduct(id: string) {
+  //   setId(id);
+  //   toggleModal();
+  // }
 
   return (
 
@@ -66,16 +79,16 @@ export default function ProductList() {
           <header>
             <h2>Produtos Cadastrados</h2>
 
-            {/* <div className={styles.searchProductContainer}>
+            <div className={styles.searchProductContainer}>
               <h3>Buscar Produto</h3>
               <div>
                 <span>
                   <IoIosSearch color='#dadfe4' size={28}/>
                 </span>
-                <input type='text' />
-                <button>Buscar</button>
+                <input type='text' value={search} onChange={e => setSearch(e.target.value)}/>
+                <button onClick={handleSearchProduct}>Buscar</button>
               </div>
-            </div> */}
+            </div>
           </header>
           
           <div>
@@ -83,7 +96,13 @@ export default function ProductList() {
             <div className={styles.products}>
 
               {
-                products?.map(product => (
+                productsFiltered.length === 0 && (
+                  <p>Nenhum produto.</p>
+                )
+              }
+
+              {
+                productsFiltered?.map(product => (
                   <article>
                     <p>{product.name}</p>
                     <p>{product.vendor}</p>

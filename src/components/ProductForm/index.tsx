@@ -55,7 +55,7 @@ export default function ProductForm() {
 
     const data = {
       id: Date.now() + name,
-      name,
+      name: name.toUpperCase(),
       vendor: currentVendor,
       category: currentCategory,
       amount,
