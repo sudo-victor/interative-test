@@ -1,12 +1,33 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { useModalProductForm } from '../../contexts/ModalProductContext';
 import styles from './product-form.module.scss';
 import vendorsData from '../../data/vendors.json';
 
-export default function ProductForm() {
+type ProductFormProps = {
+  isToEdit?: boolean;
+}
+
+type State = {
+  product: {
+      product: Product[];
+  };
+}
+
+type Product = {
+  id: string;
+  name: string;
+  vendor: string;
+  category: string;
+  amount: number;
+  price: number;
+}
+
+
+export default function ProductForm({ isToEdit }: ProductFormProps) {
   const [vendorsGroup, setVendorsGroup] = useState<String[]>([]);
   const [categoriesGroup, setCategoriesGroup] = useState<String[]>([]);
   const [name, setName] = useState('');
@@ -15,7 +36,10 @@ export default function ProductForm() {
   const [currentVendor, setCurrentVendor] = useState('');
   const [currentCategory, setCurrentCategory] = useState('');
   const dispatch = useDispatch();
+  const products = useSelector((state: State) => state.product.product);
+  const { id, toggleModal } = useModalProductForm()
 
+  // Get vendors and categories of database
   useEffect(() => {
     function getAllVendors() {
       const allVendors = vendorsData;
@@ -27,6 +51,23 @@ export default function ProductForm() {
     getAllVendors();
   }, [])
 
+  // Get data product if the form is to update a product
+  useEffect(() => {
+    console.log('teste')
+    function laodProductIfWillUpdated() {
+      if(!isToEdit) return;
+      
+      const product = products.find(product => product.id === id) || {} as Product;
+
+      setName(product.name);
+      setCurrentVendor(product.vendor);
+      setCurrentCategory(product.category);
+      setAmount(product.amount);
+      setPrice(product.price);
+    }
+
+    laodProductIfWillUpdated();
+  }, [id, products, isToEdit])
 
   useEffect(() => {
     function getAllCategoriesByVendor() {
@@ -45,7 +86,7 @@ export default function ProductForm() {
 
     if(!validateForm()) return;
 
-    const data = {
+    let data = {
       id: Date.now() + name,
       name: name.toUpperCase(),
       vendor: currentVendor,
@@ -54,24 +95,25 @@ export default function ProductForm() {
       price
     };
     
-    dispatch({
-          type: 'ADD_PRODUCT',
-          payload: data,
-    });
-    
-    // dispatch({
-    //       type: 'UPDATE_PRODUCT',
-    //       payload: {id, product: data},
-    // });
-
+    if(isToEdit) {
+      data.id = id;
+       dispatch({
+              type: 'UPDATE_PRODUCT',
+              payload: {id, product: data},
+        });
+        toggleModal();
+    } else {
+      dispatch({
+            type: 'ADD_PRODUCT',
+            payload: {product: data},
+      });
+    }
 
     setName('');
     setCurrentVendor('');
     setCurrentCategory('');
     setAmount(0);
     setPrice(0);
-
-
   }
 
   function validateForm() {
@@ -110,7 +152,7 @@ export default function ProductForm() {
 
   return (
     <section className={styles.productFormComponent}>
-      <h2>Cadastrar Produto</h2>
+      <h2>{isToEdit ? "Editar" : "Cadastrar"} Produto</h2>
 
       <form onSubmit={handleSubmit}>
         <label htmlFor="name">Nome produto</label>
@@ -136,14 +178,13 @@ export default function ProductForm() {
           }
         </select>
         
-
         <label htmlFor="amount">Quantidade</label>
-        <input className={styles.inputAmount} name="amount" type='number' value={amount} onChange={e => setAmount(Number(e.target.value))}/>
+        <input min='1' className={styles.inputAmount} name="amount" type='number' value={amount} onChange={e => setAmount(Number(e.target.value))}/>
 
         <label htmlFor="price">Valor unidade</label>
-        <input className={styles.inputPrice}  step="0.01" name="price" type='number' value={price} onChange={e => setPrice(Number(e.target.value))}/>
+        <input min='0' className={styles.inputPrice}  step="0.01" name="price" type='number' value={price} onChange={e => setPrice(Number(e.target.value))}/>
 
-        <button>Adicionar Produto</button>
+        <button>{isToEdit ? "Atualizar" : "Adicionar"}  Produto</button>
       </form>
 
         

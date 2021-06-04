@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-// import { RiFileEditLine } from 'react-icons/ri';
+import { useModalProductForm } from '../../contexts/ModalProductContext';
+import { RiFileEditLine } from 'react-icons/ri';
 import { TiDeleteOutline } from 'react-icons/ti';
 import { IoIosSearch } from 'react-icons/io';
 
 
 import styles from './product-list.module.scss';
-// import { useModalProductForm } from '../../contexts/ModalProductContext';
 
 type State = {
   product: {
@@ -31,7 +31,7 @@ export default function ProductList() {
   const products = useSelector((state: State) => state.product.product);
   const [productsFiltered, setProductsFiltered] = useState<Product[]>([])
   const dispatch = useDispatch();
-  // const {toggleModal, setId} = useModalProductForm();
+  const {toggleModal, setId} = useModalProductForm();
 
    useEffect(() => {
     function loadDatas() {
@@ -54,7 +54,7 @@ export default function ProductList() {
   function handleDeleteProduct(id: string) {
     dispatch({
           type: 'DELETE_PRODUCT',
-          payload: {id},
+          payload: {product: {id}},
     });
   } 
 
@@ -68,10 +68,10 @@ export default function ProductList() {
     setProductsFiltered(productsFilteredGroup);
   }
   
-  // function handleEditProduct(id: string) {
-  //   setId(id);
-  //   toggleModal();
-  // }
+  function handleEditProduct(id: string) {
+    setId(id);
+    toggleModal();
+  }
 
   return (
 
@@ -103,16 +103,16 @@ export default function ProductList() {
 
               {
                 productsFiltered?.map(product => (
-                  <article>
+                  <article key={product.id}>
                     <p>{product.name}</p>
                     <p>{product.vendor}</p>
                     <p>{product.category}</p>
                     <p>{product.amount}</p>
-                    <p>{product.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-                    {/* <button onClick={() => handleEditProduct(product.id)}>
+                    <p>{product.price?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                    <button onClick={() => handleEditProduct(product.id)}>
                       <RiFileEditLine color='#03286A' size={16}/>
                       Editar
-                    </button> */}
+                    </button>
                     <button onClick={() => handleDeleteProduct(product.id)}>
                       <TiDeleteOutline color='#03286A' size={18}/>
                       Deletar

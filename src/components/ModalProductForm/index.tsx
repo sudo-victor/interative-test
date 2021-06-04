@@ -10,7 +10,7 @@ export default function ModalProductForm() {
     <div className={styles.modalComponent} style={{display: isActivated ? 'flex' : 'none'}}>
       <button className={styles.back} onClick={toggleModal} >voltar</button>
       <section>
-        <ProductForm />
+        <ProductForm isToEdit/>
       </section>
     </div>
   );

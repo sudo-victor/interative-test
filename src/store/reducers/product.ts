@@ -1,4 +1,4 @@
-import { ADD_PRODUCT, DELETE_PRODUCT } from "../actions/actionTypes";
+import { ADD_PRODUCT, DELETE_PRODUCT, UPDATE_PRODUCT } from "../actions/actionTypes";
 
 const INITIAL_STATE = {
   product: [] as Product[],
@@ -6,8 +6,13 @@ const INITIAL_STATE = {
 
 type Action = {
   type: string;
-  payload: Product | {id: string; product: Product};
+  payload: PayloadUpdate;
 }
+
+type PayloadUpdate = { 
+  product: Product;
+  id: string; 
+};
 
 type Product = {
   id: string;
@@ -24,25 +29,26 @@ export const product = (state = INITIAL_STATE, action: Action) => {
     case ADD_PRODUCT:
       return {
         ...state,
-        product: [...state.product, action.payload]
+        product: [...state.product, action.payload.product]
       };
 
     case DELETE_PRODUCT:
-      const productsGroup = state.product.filter( product => product.id !== action.payload.id);
+      const productsGroup = state.product.filter( product => product.id !== action.payload.product.id);
       return {
         product: productsGroup
       };
 
-      // case UPDATE_PRODUCT:
-      //   const productsUpdated = state.product.map( product => {
-      //     if(product.id === action.payload.id) {
-      //       return action.payload.product;
-      //     }
-      //     return product;
-      //   }) as Product[];
-      //   return {
-      //     product: productsUpdated
-      //   };
+      case UPDATE_PRODUCT:
+        const productsUpdated = state.product.map( product => {
+          if(product.id === action.payload.id) {
+            return action.payload.product;
+          }
+          return product;
+        });
+        console.log(action.payload, productsUpdated);
+        return {
+          product: productsUpdated
+        };
 
     default:
       return state;

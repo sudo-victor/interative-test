@@ -9,7 +9,12 @@ type Product = {
   price: number;
 }
 
-export const product = (value: Product) => ({
+type PayloadUpdate = { 
+  id: string; 
+  product: Product;
+};
+
+export const product = (value: Product | PayloadUpdate) => ({
   type: ADD_PRODUCT,
   payload: value
 });

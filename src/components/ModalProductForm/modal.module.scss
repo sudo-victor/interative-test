@@ -10,6 +10,13 @@
   align-items: center;
   justify-content: center;
 
+  & > section {
+    padding: 25px;
+
+    box-shadow: 4px 4px 5px rgb(164, 164, 164);
+    background: #fff;
+  }
+
   button.back {
     position: absolute;
     top: 5px;

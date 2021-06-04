@@ -2,7 +2,7 @@
 import styles from './styles/app.module.scss';
 import ProductForm from './components/ProductForm';
 import ProductList from './components/ProductList';
-// import ModalProductForm from './components/ModalProductForm';
+import ModalProductForm from './components/ModalProductForm';
 
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
         <ProductList />
       </main>
 
-      {/* <ModalProductForm /> */}
+      <ModalProductForm />
     </div>
   );
 }
