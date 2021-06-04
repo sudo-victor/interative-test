@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { RiFileEditLine } from 'react-icons/ri';
+// import { RiFileEditLine } from 'react-icons/ri';
 import { TiDeleteOutline } from 'react-icons/ti';
 import { IoIosSearch } from 'react-icons/io';
 
 
 import styles from './product-list.module.scss';
-import { useModalProductForm } from '../../contexts/ModalProductContext';
+// import { useModalProductForm } from '../../contexts/ModalProductContext';
 
 type State = {
   product: {

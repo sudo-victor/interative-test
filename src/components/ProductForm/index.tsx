@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import styles from './product-form.module.scss';
 import vendorsData from '../../data/vendors.json';
@@ -41,17 +43,7 @@ export default function ProductForm() {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if( name === "") {
-      return;
-    } else if( amount === 0) {
-      return;
-    }else if( price === 0) {
-      return;
-    }else if( currentVendor === "") {
-      return;
-    } else if( currentCategory === "") {
-      return;
-    }
+    if(!validateForm()) return;
 
     const data = {
       id: Date.now() + name,
@@ -80,6 +72,40 @@ export default function ProductForm() {
     setPrice(0);
 
 
+  }
+
+  function validateForm() {
+    if( name === "") {
+      notifyError()
+      return false;
+    } else if( amount === 0) {
+      notifyError()
+      return false;
+    }else if( price === 0) {
+      notifyError()
+      return false;
+    }else if( currentVendor === "") {
+      notifyError()
+      return false;
+    } else if( currentCategory === "") {
+      notifyError()
+      return false;
+    }
+
+    return true;
+
+  }
+
+  function notifyError() {
+    toast.error('Preencha todos os campos corretamente!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
   }
 
   return (
@@ -115,11 +141,13 @@ export default function ProductForm() {
         <input className={styles.inputAmount} name="amount" type='number' value={amount} onChange={e => setAmount(Number(e.target.value))}/>
 
         <label htmlFor="price">Valor unidade</label>
-        <input className={styles.inputPrice} name="price" type='number' value={price} onChange={e => setPrice(Number(e.target.value))}/>
+        <input className={styles.inputPrice}  step="0.01" name="price" type='number' value={price} onChange={e => setPrice(Number(e.target.value))}/>
 
         <button>Adicionar Produto</button>
       </form>
 
+        
+      <ToastContainer />
     </section>
   );
 }

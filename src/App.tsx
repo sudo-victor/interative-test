@@ -12,7 +12,6 @@ function App() {
 
         <ProductForm />
         <ProductList />
-        
       </main>
 
       {/* <ModalProductForm /> */}

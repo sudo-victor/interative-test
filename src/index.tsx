@@ -4,14 +4,14 @@ import { Provider } from 'react-redux';
 import { Store } from './store';
 import './styles/global.scss';
 
-import {ModalProductFormProvider} from './contexts/ModalProductContext'
+// import {ModalProductFormProvider} from './contexts/ModalProductContext'
 
 
 ReactDOM.render(
   <Provider store={Store}>
-    <ModalProductFormProvider>
+    {/* <ModalProductFormProvider> */}
       <App />
-    </ModalProductFormProvider>
+    {/* </ModalProductFormProvider> */}
   </Provider>,
   document.getElementById('root')
 );
