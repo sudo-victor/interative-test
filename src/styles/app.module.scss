@@ -1,0 +1,14 @@
+#mainPage {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  main {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 25px;
+  }
+}

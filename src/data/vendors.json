@@ -1,0 +1,10 @@
+[
+  {
+    "name": "Nestlé",
+    "categories": ["Achocolatado", "Barra de Chocolate"]
+  },
+  {
+    "name": "Ambev",
+    "categories": ["Cerveja", "Refrigerante"]
+  }
+]

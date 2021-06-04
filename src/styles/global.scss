@@ -1,0 +1,30 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --blue800: #03286a;
+  --blue300: #748ab5;
+  --border: #dadfe4;
+}
+
+body {
+  background: #fff;
+  font-family: "Roboto", sans-serif;
+}
+
+h2 {
+  margin-bottom: 25px;
+
+  color: var(--blue800);
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 22px;
+}
+
+input,
+select {
+  outline-color: var(--blue800);
+}
