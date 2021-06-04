@@ -20,7 +20,7 @@ type Product = {
   vendor: string;
   category: string;
   amount: number;
-  price: string;
+  price: number;
 }
 
 
@@ -41,7 +41,7 @@ export default function ProductList() {
       const amountFinal = products
         .map(product => product?.amount)
         .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-      const priceFinal = products.reduce((accumulator, currentValue) => accumulator + Number(currentValue.price) * currentValue.amount, 0);
+      const priceFinal = products.reduce((accumulator, currentValue) => accumulator + currentValue.price * currentValue.amount, 0);
 
       setTotalAmount(amountFinal);
       setTotalPrice(priceFinal);
@@ -108,7 +108,7 @@ export default function ProductList() {
                     <p>{product.vendor}</p>
                     <p>{product.category}</p>
                     <p>{product.amount}</p>
-                    <p>R$ {product.price}</p>
+                    <p>{product.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
                     {/* <button onClick={() => handleEditProduct(product.id)}>
                       <RiFileEditLine color='#03286A' size={16}/>
                       Editar
@@ -127,7 +127,7 @@ export default function ProductList() {
             <div className={styles.infoTotal}>
               <p>Total</p>
               <p>{totalAmount}</p>
-              <p>R$ {totalPrice}</p>
+              <p>{totalPrice.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
             </div>
 
           </div>
