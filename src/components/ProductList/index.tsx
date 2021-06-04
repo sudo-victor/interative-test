@@ -103,7 +103,7 @@ export default function ProductList() {
 
               {
                 productsFiltered?.map(product => (
-                  <article>
+                  <article key={product.id}>
                     <p>{product.name}</p>
                     <p>{product.vendor}</p>
                     <p>{product.category}</p>
